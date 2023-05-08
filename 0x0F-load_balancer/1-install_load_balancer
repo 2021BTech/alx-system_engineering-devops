@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# balancer install
+sudo apt-get -y update
+sudo apt-get install -y haproxy
+echo "
+frontend oscar
+    bind *:80
+    mode http
+    default_backend backendnodes
+
+backend backendnodes
+    balance roundrobin
+    server 1551-web-01 35.237.181.211 check
+    server 1551-web-02 35.229.39.168  check " >> /etc/haproxy/haproxy.cfg
+
+sudo service haproxy restart
